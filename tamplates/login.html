@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - DeinVerein</title>
+    </head>
+<body>
+
+    <div class="login-container">
+        <img src="" alt="Vereinslogo" class="logo">
+
+        <h1>Willkommen beim TSV Urdenbach</h1>
+
+        <form action="/login" method="post">
+            <div class="form-group">
+                <label for="email">E-Mail-Adresse</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Passwort</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+
+            <button type="submit" class="btn">Anmelden</button>
+        </form>
+
+        <div class="links">
+            <a href="/passwort-vergessen">Passwort vergessen?</a>
+            <a href="/registrieren">Noch kein Account? Jetzt registrieren</a>
+        </div>
+    </div>
+
+</body>
+</html>
