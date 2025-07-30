@@ -1,0 +1,103 @@
+/* Grundlegende Stile für die ganze Seite */
+body {
+    font-family: sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Der weiße Kasten in der Mitte */
+.login-container {
+    background-color: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 350px;
+}
+
+/* Das Vereinslogo */
+.logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+/* Die Überschrift */
+h1 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 30px;
+}
+
+/* Gruppierung für Label und Input-Feld */
+.form-group {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="text"], /* <-- DIESE ZEILE IST NEU */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Wichtig für die Breite */
+}
+
+/* Der rote Anmelde-Button */
+.btn {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #d9232d; /* Ein Rot-Ton aus deinem Logo */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Die Links unter dem Button */
+.links {
+    margin-top: 20px;
+}
+
+.links a {
+    color: #007bff; /* Ein Blau-Ton aus deinem Logo */
+    text-decoration: none;
+    display: block;
+    margin-top: 10px;
+}
+
+/* Stile für die Nachrichten-Boxen */
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    position: absolute;
+    top: 20px;
+    width: 350px;
+}
+
+.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+}
