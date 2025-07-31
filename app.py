@@ -124,22 +124,67 @@ def confirm_email(token):
     # ... (bleibt wie bisher)
     pass # Platzhalter
 
-@app.route("/warteraum")
-# @login_required # Bleibt deaktiviert für den Test
+@app.route("/warteraum", methods=['GET', 'POST'])
+@login_required
 def warteraum_page():
-    # Wir zeigen nur die Seite an, ohne Logik zu prüfen
+    # Prüfen, ob der Nutzer schon ein Formular ausgefüllt hat
+    if current_user.role != 'Gast':
+        return render_template("warteraum_submitted.html")
+
     return render_template("warteraum.html")
+
 
 @app.route("/warteraum/spieler", methods=['GET', 'POST'])
 @login_required
 def spieler_formular_page():
-    # Logik zum Speichern kommt im nächsten Schritt
+    if request.method == 'POST':
+        # Daten aus dem Formular holen und in der Datenbank speichern
+        current_user.birth_date = datetime.strptime(request.form.get('birth_date'), '%Y-%m-%d').date()
+        current_user.street = request.form.get('street')
+        current_user.zip_code = request.form.get('zip_code')
+        current_user.city = request.form.get('city')
+        current_user.phone_number = request.form.get('phone_number')
+        current_user.role = 'Spieler' # Rolle aktualisieren
+        db.session.commit()
+        flash('Deine Daten wurden erfolgreich übermittelt. Bitte warte auf die Freischaltung.', 'success')
+        return redirect(url_for('warteraum_page'))
+
     return render_template("spieler_formular.html")
+
 
 @app.route("/warteraum/eltern", methods=['GET', 'POST'])
 @login_required
 def eltern_formular_page():
-    # Logik zum Speichern kommt im nächsten Schritt
+    if request.method == 'POST':
+        # Daten des Elternteils speichern
+        current_user.phone_number = request.form.get('phone_number')
+        current_user.role = 'Elternteil' # Rolle aktualisieren
+        
+        # Daten des Kindes holen und einen neuen Benutzer für das Kind erstellen
+        child_full_name = request.form.get('child_full_name')
+        child_birth_date = datetime.strptime(request.form.get('child_birth_date'), '%Y-%m-%d').date()
+
+        # Kind-Account erstellen und mit Elternteil verknüpfen
+        # Wir generieren ein temporäres, sehr schwer zu erratendes Passwort
+        temp_password = os.urandom(16).hex() 
+        hashed_password = bcrypt.generate_password_hash(temp_password).decode('utf-8')
+
+        new_child = User(
+            full_name=child_full_name,
+            email=f"kind_{current_user.id}_{child_full_name.replace(' ','_')}@app.local", # Eindeutige Dummy-E-Mail
+            password=hashed_password,
+            role='Kind',
+            is_approved=True,
+            email_confirmed=True,
+            birth_date=child_birth_date,
+            parent_id=current_user.id
+        )
+        db.session.add(new_child)
+        db.session.commit()
+        
+        flash('Deine und die Daten deines Kindes wurden erfolgreich übermittelt. Bitte warte auf die Freischaltung.', 'success')
+        return redirect(url_for('warteraum_page'))
+
     return render_template("eltern_formular.html")
 
 @app.route("/dashboard")
