@@ -101,3 +101,26 @@ input[type="password"] {
     background-color: #f8d7da;
     border-color: #f5c6cb;
 }
+
+.form-group-remember {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group-remember label {
+    margin-left: 10px;
+    margin-bottom: 0;
+}
+
+.role-selection {
+    margin-top: 20px;
+}
+
+.btn-secondary {
+    background-color: #6c757d; /* Ein neutrales Grau */
+    display: block;
+    margin-top: 10px;
+    text-decoration: none;
+}
