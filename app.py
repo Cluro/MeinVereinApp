@@ -124,13 +124,15 @@ def confirm_email(token):
     # ... (bleibt wie bisher)
     pass # Platzhalter
 
-@app.route("/warteraum", methods=['GET', 'POST'])
+@app.route("/warteraum")
 @login_required
 def warteraum_page():
-    # Prüfen, ob der Nutzer schon ein Formular ausgefüllt hat
-    if current_user.role != 'Gast':
-        return render_template("warteraum_submitted.html")
-
+    # Wenn ein Nutzer schon freigeschaltet ist, soll er nicht im Warteraum sein.
+    # Schicke ihn direkt zum Dashboard.
+    if current_user.is_approved:
+        return redirect(url_for('dashboard_page'))
+    
+    # Ansonsten zeige die Warteraum-Seite an.
     return render_template("warteraum.html")
 
 
@@ -188,10 +190,14 @@ def eltern_formular_page():
     return render_template("eltern_formular.html")
 
 @app.route("/dashboard")
-# @login_required
+@login_required
 def dashboard_page():
-    # ... (bleibt wie bisher)
-    pass # Platzhalter
+    # Wenn ein Nutzer noch nicht freigeschaltet ist, schicke ihn in den Warteraum.
+    if not current_user.is_approved:
+        return redirect(url_for('warteraum_page'))
+
+    # Ansonsten zeige das Dashboard an.
+    return render_template("dashboard.html")
 
 @app.route("/logout")
 # @login_required
