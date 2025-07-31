@@ -7,14 +7,24 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <div class="login-container">
         <img src="" alt="Vereinslogo" class="logo">
         <h1>Account erstellen</h1>
         <form method="POST" action="">
             <div class="form-group">
-    <label for="full_name">Vor- und Nachname</label>
-    <input type="text" id="full_name" name="full_name" required>
-</div>
+                <label for="full_name">Vor- und Nachname</label>
+                <input type="text" id="full_name" name="full_name" required>
+            </div>
             <div class="form-group">
                 <label for="email">E-Mail-Adresse</label>
                 <input type="email" id="email" name="email" required>

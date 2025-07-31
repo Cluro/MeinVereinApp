@@ -124,3 +124,9 @@ input[type="password"] {
     margin-top: 10px;
     text-decoration: none;
 }
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+}
