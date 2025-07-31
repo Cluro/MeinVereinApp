@@ -111,7 +111,26 @@ def login_page():
 
 @app.route("/registrieren", methods=['GET', 'POST'])
 def register_page():
-    # ... (bleibt wie bisher)
+    if request.method == 'POST':
+        email = request.form.get('email')
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Diese E-Mail-Adresse ist bereits registriert. Bitte logge dich ein.', 'danger')
+            return redirect(url_for('register_page'))
+
+        full_name = request.form.get('full_name')
+        password = request.form.get('password')
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        
+        # HIER IST DIE ÄNDERUNG: Wir setzen email_confirmed direkt auf True
+        new_user = User(full_name=full_name, email=email, password=hashed_password, email_confirmed=True)
+        
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash('Temporärer Test: Account wurde direkt bestätigt. Du kannst dich jetzt einloggen.', 'success')
+        return redirect(url_for('login_page'))
+        
     return render_template("register.html")
 
 @app.route('/confirm/<token>')
@@ -132,12 +151,17 @@ def confirm_email(token):
     
     return redirect(url_for('login_page'))
 
-@app.route("/warteraum")
+@app.route("/warteraum/spieler", methods=['GET', 'POST'])
 @login_required
-def warteraum_page():
-    if current_user.is_approved:
-        return redirect(url_for('dashboard_page'))
-    return render_template("warteraum.html")
+def spieler_formular_page():
+    # Logik zum Speichern kommt im nächsten Schritt
+    return render_template("spieler_formular.html")
+
+@app.route("/warteraum/eltern", methods=['GET', 'POST'])
+@login_required
+def eltern_formular_page():
+    # Logik zum Speichern kommt im nächsten Schritt
+    return render_template("eltern_formular.html")
 
 @app.route("/dashboard")
 @login_required
